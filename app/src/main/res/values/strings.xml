@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AnotherTestApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">Picross</string>
+    <string name="startButtonText">Start Game</string>
+    <string name="button2Text">Dummy1</string>
+    <string name="button3Text">Dummy2</string>
+    <string name="title_activity_size_picker">SizePicker</string>
+    <string name="sizePickerTitle">Size Picker</string>
+</resources>
