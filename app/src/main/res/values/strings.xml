@@ -6,5 +6,6 @@
     <string name="button2Text">Dummy1</string>
     <string name="button3Text">Dummy2</string>
     <string name="title_activity_size_picker">SizePicker</string>
-    <string name="sizePickerTitle">Size Picker</string>
+    <string name="sizePickerTitle">Puzzle Size</string>
+    <string name="backButtonText">Back</string>
 </resources>
