@@ -8,4 +8,5 @@
     <string name="title_activity_size_picker">SizePicker</string>
     <string name="sizePickerTitle">Puzzle Size</string>
     <string name="backButtonText">Back</string>
+    <string name="playButtonText">Play</string>
 </resources>

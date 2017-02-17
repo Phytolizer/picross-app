@@ -17,7 +17,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 	private final String TAG = "picrossApp";
-    @Override
+	private RelativeLayout mainActivityLayout;
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
         Background background = new Background();
-        RelativeLayout mainActivityLayout = new RelativeLayout(this);
+        mainActivityLayout = new RelativeLayout(this);
 
 	    CommonVars.makeTimer(background, mainActivityLayout);
 
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 //			    Log.i(TAG, "User clicked " + R.string.startButtonText);
 			    //say 'you did it!'
 			    startActivity(new Intent(MainActivity.this, SizePicker.class));
+
 		    }
 	    });
 	    titleDetails.addRule(RelativeLayout.ABOVE, bStartGame.getId());
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		CommonVars.getTimer().start();
+		CommonVars.getTimer().setLayout(mainActivityLayout);
 	}
 
 	@Override
