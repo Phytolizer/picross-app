@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AnotherTestApp</string>
+    <string name="app_name">Picross</string>
     <string name="action_settings">Settings</string>
     <string name="title">Picross</string>
     <string name="startButtonText">Start Game</string>
