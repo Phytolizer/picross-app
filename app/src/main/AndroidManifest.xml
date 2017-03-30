@@ -19,6 +19,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".GameActivity"
+            android:label="Game Window"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SizePicker"/>
+        </activity>
+        <activity
             android:name=".SizePicker"
             android:label="@string/title_activity_size_picker"
             android:parentActivityName=".MainActivity"

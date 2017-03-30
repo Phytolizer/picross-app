@@ -18,4 +18,17 @@ public class Box {
 	public void setStatus(BoxStatus status) {
 		this.status = status;
 	}
+	public String toString() {
+		switch(status) {
+			case EMPTY:
+				return "EMPTY";
+			case CORRECT:
+				return "CORRECT";
+			case INCORRECT:
+				return "INCORRECT";
+			case MARKED:
+				return "MARKED";
+		}
+		return "";
+	}
 }

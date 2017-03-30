@@ -10,4 +10,11 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 	}
+	public Coordinate(Coordinate copyFrom) {
+		x = copyFrom.x;
+		y = copyFrom.y;
+	}
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
 }

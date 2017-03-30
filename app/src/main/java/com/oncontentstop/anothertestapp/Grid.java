@@ -5,24 +5,20 @@ package com.oncontentstop.anothertestapp;
  */
 
 public class Grid {
-	private int sizeX, sizeY;
-	private Box[][] contents;
+	protected int sizeX, sizeY;
+	protected Box[][] contents;
 	public Grid(int sx, int sy) {
 		sizeX = sx;
 		sizeY = sy;
 		contents = new Box[sx][sy];
-		for(int x = 0; x < sx; x++) {
-			for(int y = 0; y < sy; y++) {
-				contents[x][y] = new Box();
-			}
-		}
+		initBoxes();
 	}
 	public Box getBox(int x, int y) {
 		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY)
 			return null;
 		return contents[x][y];
 	}
-	public boolean reveal(int x, int y, Grid compareGrid) {
+	public boolean reveal(int x, int y, SolutionGrid compareGrid) {
 		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY)
 			return false;
 		Box b = contents[x][y];
@@ -42,5 +38,12 @@ public class Grid {
 			}
 		}
 		return false;
+	}
+	protected void initBoxes() {
+		for(int x = 0; x < sizeX; x++) {
+			for(int y = 0; y < sizeY; y++) {
+				contents[x][y] = new Box();
+			}
+		}
 	}
 }

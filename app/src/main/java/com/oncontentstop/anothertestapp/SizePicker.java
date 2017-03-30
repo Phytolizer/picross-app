@@ -224,7 +224,9 @@ public class SizePicker extends AppCompatActivity {
 		startButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				CommonVars.setSizeX(Integer.parseInt((String) xText.getText()));
+				CommonVars.setSizeY(Integer.parseInt((String) yText.getText()));
+				startActivity(new Intent(SizePicker.this, GameActivity.class));
 			}
 		});
 		sizePickerLayout.addView(startButton, startButtonDetails);
@@ -271,10 +273,8 @@ public class SizePicker extends AppCompatActivity {
 		}
 		xText.measure(0, 0);
 		xTextWidth = xText.getMeasuredWidth();
-		Log.i("Pillsbury", String.valueOf(xTextWidth));
 		yText.measure(0, 0);
 		yTextWidth = yText.getMeasuredWidth();
-		Log.i("Pillsbury", String.valueOf(yTextWidth));
 		innerLayout.removeView(yText);
 		innerLayout.removeView(xText);
 		xTextDetails.setMargins(((buttonWidth - xTextWidth) / 2), 0, 0, 0);
