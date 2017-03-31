@@ -13,7 +13,7 @@ public class SolutionGrid extends Grid {
 		for(int x = 0; x < sizeX; x++) {
 			for(int y = 0; y < sizeY; y++) {
 				contents[x][y] = new Box();
-				if(Math.random() > 0.5)
+				if(Math.random() < CommonVars.getBoardDensity())
 					contents[x][y].setStatus(BoxStatus.CORRECT);
 			}
 		}

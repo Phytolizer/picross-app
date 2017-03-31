@@ -18,9 +18,15 @@ public class GameActivity extends AppCompatActivity {
 		RelativeLayout gameLayout = new RelativeLayout(this);
 		CommonVars.getTimer().setLayout(gameLayout);
 
-		RelativeLayout.LayoutParams testWindowDetails = new RelativeLayout.LayoutParams(700, 700);
+		int deviceWidth = getResources().getDisplayMetrics().widthPixels;
+		int deviceHeight = getResources().getDisplayMetrics().heightPixels;
+		int pauseButtonHeight = 50;
+		int bottomBarHeight = 50;
+		int testWindowMaxHeight = deviceHeight - pauseButtonHeight - bottomBarHeight;
+		RelativeLayout.LayoutParams testWindowDetails = new RelativeLayout.LayoutParams(deviceWidth, testWindowMaxHeight);
+		testWindowDetails.setMargins(0, pauseButtonHeight, 0, bottomBarHeight);
 		testWindowDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		testWindowDetails.addRule(RelativeLayout.CENTER_VERTICAL);
+		testWindowDetails.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 
 		GameGrid testWindow = new GameGrid(this, CommonVars.sizeX(), CommonVars.sizeY());
 		gameLayout.addView(testWindow, testWindowDetails);

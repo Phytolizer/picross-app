@@ -20,12 +20,17 @@ public class GameGrid extends View {
 	private int squareWidth;
 	private int sizeX, sizeY;
 	private int totalW, totalH;
+	private int clueLenHoriz, clueLenVert;
 	private Coordinate initialTouch;
 	private Coordinate bound1, bound2, currPos;
-	private Paint bgPaint, borderPaint, xPaint, greenPaint, redPaint;
+	private Paint bgPaint, borderPaint, xPaint, greenPaint, redPaint, cluePaint;
 	private Grid playGrid;
 	private SolutionGrid solution;
 	private Direction touchDirection;
+	private double verticalCluePadFactor = 0.3;
+	private float clueFontSize = 30;
+	private	Rect clueBounds = new Rect();
+	private final char horizontalClueSeparator = ' ';
 	public GameGrid(Context context, int sizeX, int sizeY) {
 		super(context);
 		init(sizeX, sizeY);
@@ -54,7 +59,12 @@ public class GameGrid extends View {
 		redPaint.setColor(0xffff0000);
 		redPaint.setStyle(Paint.Style.FILL);
 		currPos = new Coordinate(0, 0);
+		cluePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		cluePaint.setColor(0xff000000);
+		cluePaint.setTextSize(clueFontSize);
 		touchDirection = NONE;
+		playGrid.createCluesFrom(solution);
+		getClueLengths(clueFontSize);
 	}
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -98,16 +108,39 @@ public class GameGrid extends View {
 			}
 		}
 		canvas.drawRect(bound1.x, bound1.y, bound2.x, bound2.y, borderPaint);
+
+		//draw clues
+		int cluePad = 5;
+		for(int row = 0; row < sizeY; row++) {
+			String clue = playGrid.getCluesHorizontal()[row].toString(horizontalClueSeparator);
+			cluePaint.getTextBounds(clue, 0, clue.length(), clueBounds);
+			int lStart = bound1.x - cluePad - clueBounds.width();
+			int yValue = (int) (bound1.y + row * squareWidth + squareWidth / 2 + clueFontSize / 2);
+			canvas.drawText(clue, lStart, yValue, cluePaint);
+		}
+
+		//draw vertical clues
+		for(int col = 0; col < sizeX; col++) {
+			for(int i = playGrid.getCluesVertical()[col].getNumGroups() - 1; i >= 0; i--) {
+				String currClue = Integer.toString(playGrid.getCluesVertical()[col].getGroup(i));
+				int clueWidth = (int) cluePaint.measureText(currClue);
+				int currentY = (int) (bound1.y - cluePad - i * (clueFontSize + verticalCluePadFactor));
+				int currentX = bound1.x + col * squareWidth + squareWidth / 2 - clueWidth / 2;
+				canvas.drawText(currClue, currentX, currentY, cluePaint);
+			}
+		}
 	}
 	private int calculateSquareWidth(int w, int h) {
+		w = w - clueLenHoriz;
+		h = h - clueLenVert;
 		double whRatio = (double) w / (double) h;
 		double xyRatio = (double)sizeX / (double)sizeY;
 		if(whRatio > xyRatio) {
 			//top & bottom will touch edges of the grid
 			int size = h / sizeY;
 			int gridPixelWidth = sizeX * size;
-			int leftSpace = (w - gridPixelWidth) / 2;
-			int topSpace = (h - sizeY * size) / 2;
+			int leftSpace = (w - gridPixelWidth) / 2 + clueLenHoriz;
+			int topSpace = (h - sizeY * size) / 2 + clueLenVert;
 			bound1 = new Coordinate(leftSpace, topSpace);
 			currPos = new Coordinate(bound1);
 			bound2 = new Coordinate(bound1.x + sizeX * squareWidth, bound1.y + sizeY * squareWidth);
@@ -116,8 +149,8 @@ public class GameGrid extends View {
 			//left & right are extremes
 			int size = w / sizeX;
 			int gridPixelHeight = sizeY * size;
-			int topSpace = (h - gridPixelHeight) / 2;
-			int leftSpace = (w - sizeX * size) / 2;
+			int topSpace = (h - gridPixelHeight) / 2 + clueLenVert;
+			int leftSpace = (w - sizeX * size) / 2 + clueLenHoriz;
 			bound1 = new Coordinate(leftSpace, topSpace);
 			currPos = new Coordinate(bound1);
 			bound2 = new Coordinate(bound1.x + sizeX * squareWidth, bound1.y + sizeY * squareWidth);
@@ -173,6 +206,9 @@ public class GameGrid extends View {
 			return super.onTouchEvent(event);
 		}
 		Coordinate boxCoords = getBoxPos(x, y);
+		if(boxCoords == null) {
+			return false;
+		}
 		if(reveal)
 			playGrid.reveal(boxCoords.x, boxCoords.y, solution);
 		invalidate();
@@ -195,5 +231,27 @@ public class GameGrid extends View {
 		if(boxPos.x >= playGrid.sizeX || boxPos.y >= playGrid.sizeY || boxPos.x < 0 || boxPos.y < 0)
 			return null;
 		return boxPos;
+	}
+	private void getClueLengths(float fontSize) {
+		int maxHorizLen = 0;
+		Paint textPaint = new Paint();
+		textPaint.setTextSize(fontSize);
+		for(Clue c : playGrid.getCluesHorizontal()) {
+			String clue = c.toString(horizontalClueSeparator);
+			int width = (int) textPaint.measureText(clue);
+			if(width > maxHorizLen) {
+				maxHorizLen = width;
+			}
+		}
+		clueLenHoriz = maxHorizLen;
+		int maxVertLen = 0;
+		for(Clue c : playGrid.getCluesVertical()) {
+			int numGroups = c.getNumGroups();
+			int pixelHeight = (int) (numGroups * (fontSize + verticalCluePadFactor));
+			if(pixelHeight > maxVertLen) {
+				maxVertLen = pixelHeight;
+			}
+		}
+		clueLenVert = maxVertLen;
 	}
 }

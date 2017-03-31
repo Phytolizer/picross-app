@@ -10,6 +10,7 @@ public class CommonVars {
 	private static Timer timer;
 	private static int sizeX = 10;
 	private static int sizeY = 10;
+	private static final double BOARD_DENSITY = 0.5;
 
 	public static void makeTimer(Background background, RelativeLayout layout) {
 		timer = new Timer(background, layout);
@@ -52,5 +53,9 @@ public class CommonVars {
 	public static void decrementSizeY() {
 		if(sizeY > 1)
 			sizeY--;
+	}
+
+	public static double getBoardDensity() {
+		return BOARD_DENSITY;
 	}
 }
