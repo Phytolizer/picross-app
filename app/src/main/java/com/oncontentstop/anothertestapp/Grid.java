@@ -29,7 +29,7 @@ public class Grid {
 		Box b = contents[x][y];
 		Box answer = compareGrid.getBox(x, y);
 		if(b.getStatus() == BoxStatus.CORRECT || b.getStatus() == BoxStatus.INCORRECT) {
-			return true;
+			return false;
 		} else if(b.getStatus() == BoxStatus.MARKED) {
 			b.setStatus(BoxStatus.EMPTY);
 		} else {
@@ -43,6 +43,20 @@ public class Grid {
 			}
 		}
 		return false;
+	}
+	public boolean mark(int x, int y) {
+		if(x < 0 || x >= sizeX || y < 0 || y >= sizeY)
+			return false;
+		Box b = contents[x][y];
+		if(b.getStatus() == BoxStatus.CORRECT || b.getStatus() == BoxStatus.INCORRECT) {
+			return false;
+		} else if(b.getStatus() == BoxStatus.MARKED) {
+			b.setStatus(BoxStatus.EMPTY);
+			return true;
+		} else {
+			b.setStatus(BoxStatus.MARKED);
+			return true;
+		}
 	}
 	protected void initBoxes() {
 		for(int x = 0; x < sizeX; x++) {

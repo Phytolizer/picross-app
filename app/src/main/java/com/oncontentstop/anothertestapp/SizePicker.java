@@ -27,7 +27,7 @@ public class SizePicker extends AppCompatActivity {
 
 		Background background = new Background();
 		RelativeLayout sizePickerLayout = new RelativeLayout(this);
-		CommonVars.getTimer().setLayout(sizePickerLayout);
+		CommonVars.getBackgroundBackgroundTimer().setLayout(sizePickerLayout);
 		sizePickerLayout.setBackgroundColor(Color.WHITE);
 
 		//positioning rules
@@ -37,28 +37,20 @@ public class SizePicker extends AppCompatActivity {
 		);
 		titleDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		titleDetails.addRule(RelativeLayout.ALIGN_TOP);
-		titleDetails.setMargins(0, 50, 0, 0);
-
-		RelativeLayout.LayoutParams backButtonDetails = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT
-		);
-		backButtonDetails.addRule(RelativeLayout.ALIGN_TOP);
-		backButtonDetails.addRule(RelativeLayout.ALIGN_LEFT);
-		backButtonDetails.setMargins(40, 40, 0, 0);
+		titleDetails.setMargins(0, toDp(20), 0, 0);
 
 		RelativeLayout.LayoutParams xSizeDetails = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT
 		);
 
-		RelativeLayout.LayoutParams innerLayoutDetails = new RelativeLayout.LayoutParams(500, 300);
-		innerLayoutDetails.setMargins(0, 30, 0, 0);
+		RelativeLayout.LayoutParams innerLayoutDetails = new RelativeLayout.LayoutParams(toDp(250), toDp(200));
+		innerLayoutDetails.setMargins(0, toDp(12), 0, 0);
 
-		RelativeLayout.LayoutParams startButtonDetails = new RelativeLayout.LayoutParams(150, 80);
+		RelativeLayout.LayoutParams startButtonDetails = new RelativeLayout.LayoutParams(toDp(120), toDp(60));
 		startButtonDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		startButtonDetails.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		startButtonDetails.setMargins(0, 0, 0, 50);
+		startButtonDetails.setMargins(0, 0, 0, toDp(20));
 
 
 
@@ -66,28 +58,12 @@ public class SizePicker extends AppCompatActivity {
 		//display elements
 		TextView title = new TextView(this);
 		title.setText(R.string.sizePickerTitle);
-		title.setTextSize(toDp(50));
+		title.setTextSize(toDp(20));
 		title.setId(1);
 		title.setTextColor(Color.BLACK);
 		innerLayoutDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		innerLayoutDetails.addRule(RelativeLayout.BELOW, title.getId());
 
-		Button backButton = new Button(this);
-		backButton.setText(R.string.backButtonText);
-		backButton.setTextSize(20);
-		backButton.setBackgroundColor(Color.RED);
-		backButton.setTextColor(Color.BLACK);
-		backButton.setId(2);
-		backButton.setWidth(100);
-		backButton.setHeight(100);
-		backButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(SizePicker.this, MainActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(i);
-			}
-		});
 
 		innerLayout = new RelativeLayout(this);
 		innerLayout.setId(3);
@@ -96,15 +72,16 @@ public class SizePicker extends AppCompatActivity {
 
 		//region size picker elements
 		{
-			buttonWidth = 150;
-			buttonHeight = 80;
+			buttonWidth = toDp(80);
+			buttonHeight = toDp(50);
 			RelativeLayout.LayoutParams incXDetails = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
 			incXDetails.addRule(RelativeLayout.ALIGN_TOP);
 			incXDetails.addRule(RelativeLayout.ALIGN_LEFT);
 
 			RelativeLayout.LayoutParams incYDetails = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
 			incYDetails.addRule(RelativeLayout.ALIGN_TOP);
-			incYDetails.setMargins(500 - (2 * buttonWidth), 0, 0, 0);
+			incYDetails.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			incYDetails.setMargins(toDp(250) - (2 * buttonWidth), 0, 0, 0);
 
 			xTextDetails = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -118,20 +95,21 @@ public class SizePicker extends AppCompatActivity {
 					RelativeLayout.LayoutParams.WRAP_CONTENT
 			);
 			yTextDetails.addRule(RelativeLayout.CENTER_VERTICAL);
-			yTextDetails.setMargins(500 - (2 * buttonWidth), 0, 0, 0);
+			yTextDetails.setMargins(toDp(250) - (2 * buttonWidth), 0, 0, 0);
 
 			RelativeLayout.LayoutParams decXDetails = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
 			decXDetails.addRule(RelativeLayout.ALIGN_LEFT);
-			decXDetails.setMargins(0, 300 - 2 * buttonHeight, 0, 0);
+			decXDetails.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			decXDetails.setMargins(0, toDp(200) - buttonHeight * 2, 0, 0);
 
 			RelativeLayout.LayoutParams decYDetails = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
-			decYDetails.setMargins(500 - 2 * buttonWidth, 300 - 2 * buttonHeight, 0, 0);
+			decYDetails.setMargins(toDp(250) - 2 * buttonWidth, toDp(200) - 2 * buttonHeight, 0, 0);
 
 			incrementX = new Button(this);
 			incrementX.setBackgroundColor(Color.WHITE);
 			incrementX.setId(1);
 			incrementX.setText("▲");
-			incrementX.setTextSize(toDp(50));
+			incrementX.setTextSize(toDp(10));
 			incrementX.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -148,7 +126,7 @@ public class SizePicker extends AppCompatActivity {
 			incrementY.setBackgroundColor(Color.WHITE);
 			incrementY.setId(2);
 			incrementY.setText("▲");
-			incrementY.setTextSize(toDp(50));
+			incrementY.setTextSize(toDp(10));
 			incrementY.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -162,7 +140,7 @@ public class SizePicker extends AppCompatActivity {
 			xText = new TextView(this);
 			xText.setId(3);
 			xText.setText(Integer.toString(CommonVars.sizeX()));
-			xText.setTextSize(toDp(buttonHeight));
+			xText.setTextSize(toDp(20));
 			xText.setTextColor(Color.BLACK);
 			xText.measure(0, 0);
 			xTextWidth = xText.getMeasuredWidth();
@@ -174,7 +152,7 @@ public class SizePicker extends AppCompatActivity {
 			yText = new TextView(this);
 			yText.setId(4);
 			yText.setText(Integer.toString(CommonVars.sizeY()));
-			yText.setTextSize(toDp(buttonHeight));
+			yText.setTextSize(toDp(20));
 			yText.setTextColor(Color.BLACK);
 			yText.measure(0, 0);
 			yTextWidth = yText.getMeasuredWidth();
@@ -186,7 +164,7 @@ public class SizePicker extends AppCompatActivity {
 			decrementX.setId(5);
 			decrementX.setBackgroundColor(Color.WHITE);
 			decrementX.setText("▼");
-			decrementX.setTextSize(toDp(50));
+			decrementX.setTextSize(toDp(10));
 			decrementX.setTextColor(Color.BLACK);
 			decrementX.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -202,7 +180,7 @@ public class SizePicker extends AppCompatActivity {
 			decrementY.setId(6);
 			decrementY.setBackgroundColor(Color.WHITE);
 			decrementY.setText("▼");
-			decrementY.setTextSize(toDp(50));
+			decrementY.setTextSize(toDp(10));
 			decrementY.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -212,6 +190,8 @@ public class SizePicker extends AppCompatActivity {
 			});
 			innerLayout.addView(decrementY, decYDetails);
 
+			updateSize();
+
 		}
 		//endregion
 
@@ -219,13 +199,19 @@ public class SizePicker extends AppCompatActivity {
 		startButton.setId(4);
 		startButton.setBackgroundColor(Color.GREEN);
 		startButton.setText(R.string.playButtonText);
-		startButton.setTextSize(toDp(50));
+		startButton.setTextSize(toDp(10));
 		startButton.setTextColor(Color.BLACK);
 		startButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CommonVars.setSizeX(Integer.parseInt((String) xText.getText()));
 				CommonVars.setSizeY(Integer.parseInt((String) yText.getText()));
+				CommonVars.resetGameTimer();
+				CommonVars.setGameStatus(GameStatus.IN_PROGRESS);
+				CommonVars.resetMistakes();
+				if(CommonVars.getControlMode() == ControlMode.MARK) {
+					CommonVars.toggleControlMode();
+				}
 				startActivity(new Intent(SizePicker.this, GameActivity.class));
 			}
 		});
@@ -234,13 +220,12 @@ public class SizePicker extends AppCompatActivity {
 
 		//add display elements
 		sizePickerLayout.addView(title, titleDetails);
-		sizePickerLayout.addView(backButton, backButtonDetails);
 
 		//show final product
 		setContentView(sizePickerLayout);
 
 		//start changing background colors
-		CommonVars.getTimer().start();
+		CommonVars.getBackgroundBackgroundTimer().start();
 
 
 		/*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -278,13 +263,13 @@ public class SizePicker extends AppCompatActivity {
 		innerLayout.removeView(yText);
 		innerLayout.removeView(xText);
 		xTextDetails.setMargins(((buttonWidth - xTextWidth) / 2), 0, 0, 0);
-		yTextDetails.setMargins(((buttonWidth - xTextWidth) / 2) + 500 - 2 * buttonWidth + ((buttonWidth - yTextWidth) / 2), 0, 0, 0);
+		yTextDetails.setMargins(((buttonWidth - xTextWidth) / 2) + toDp(250) - 2 * buttonWidth + ((buttonWidth - yTextWidth) / 2), 0, 0, 0);
 		innerLayout.addView(yText, yTextDetails);
 		innerLayout.addView(xText, xTextDetails);
 	}
 
 	private int toDp(int px) {
-		return (int) ((float)px / getResources().getDisplayMetrics().density);
+		return (int) ((float)px * getResources().getDisplayMetrics().scaledDensity);
 	}
 
 }

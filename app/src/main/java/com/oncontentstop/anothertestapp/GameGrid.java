@@ -23,6 +23,7 @@ public class GameGrid extends View {
 	private int clueLenHoriz, clueLenVert;
 	private Coordinate initialTouch;
 	private Coordinate bound1, bound2, currPos;
+	private Coordinate prevBox;
 	private Paint bgPaint, borderPaint, xPaint, greenPaint, redPaint, cluePaint;
 	private Grid playGrid;
 	private SolutionGrid solution;
@@ -31,8 +32,11 @@ public class GameGrid extends View {
 	private float clueFontSize = 30;
 	private	Rect clueBounds = new Rect();
 	private final char horizontalClueSeparator = ' ';
+	private Context context;
+	private MistakeCounter tiedCounter;
 	public GameGrid(Context context, int sizeX, int sizeY) {
 		super(context);
+		this.context = context;
 		init(sizeX, sizeY);
 	}
 	private void init(int sx, int sy) {
@@ -44,7 +48,7 @@ public class GameGrid extends View {
 		bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		bgPaint.setColor(0xffffffff);
 		bgPaint.setStyle(Paint.Style.FILL);
-		borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		borderPaint = new Paint();
 		borderPaint.setColor(0xff000000);
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setStrokeWidth(strokeWidth);
@@ -128,6 +132,13 @@ public class GameGrid extends View {
 				int currentX = bound1.x + col * squareWidth + squareWidth / 2 - clueWidth / 2;
 				canvas.drawText(currClue, currentX, currentY, cluePaint);
 			}
+			if(playGrid.getCluesVertical()[col].getNumGroups() == 0) {
+				String currClue = "0";
+				int clueWidth = (int) cluePaint.measureText(currClue);
+				int currentY = bound1.y - cluePad;
+				int currentX = bound1.x + col * squareWidth + squareWidth / 2 - clueWidth / 2;
+				canvas.drawText(currClue, currentX, currentY, cluePaint);
+			}
 		}
 	}
 	private int calculateSquareWidth(int w, int h) {
@@ -159,6 +170,9 @@ public class GameGrid extends View {
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if(CommonVars.isPaused()) {
+			return super.onTouchEvent(event);
+		}
 		if(event.getPointerCount() > 1)
 			return super.onTouchEvent(event);
 		boolean reveal = false;
@@ -170,6 +184,7 @@ public class GameGrid extends View {
 			reveal = true;
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			touchDirection = NONE;
+			prevBox = null;
 			return false;
 		} else {
 			if(touchDirection == NONE) {
@@ -202,6 +217,8 @@ public class GameGrid extends View {
 				}
 			}
 		}
+		if(CommonVars.getGameStatus() != GameStatus.IN_PROGRESS)
+			reveal = false;
 		if(x < bound1.x || x > bound2.x || y < bound1.y || y > bound2.y) {
 			return super.onTouchEvent(event);
 		}
@@ -209,11 +226,43 @@ public class GameGrid extends View {
 		if(boxCoords == null) {
 			return false;
 		}
-		if(reveal)
-			playGrid.reveal(boxCoords.x, boxCoords.y, solution);
+		if(prevBox != null && prevBox.x == boxCoords.x && prevBox.y == boxCoords.y) {
+			return true;
+		}
+		if(reveal) {
+			if(CommonVars.getControlMode() == ControlMode.NORMAL) {
+				if (playGrid.reveal(boxCoords.x, boxCoords.y, solution)) {
+					if (playGrid.getBox(boxCoords.x, boxCoords.y).getStatus() == BoxStatus.CORRECT) {
+						checkIfSolved();
+					} else {
+						CommonVars.addMistake();
+						tiedCounter.invalidate();
+					}
+				}
+			} else {
+				playGrid.mark(boxCoords.x, boxCoords.y);
+			}
+			prevBox = new Coordinate(boxCoords);
+		}
 		invalidate();
 		return true;//tells the view to keep updating position
 	}
+
+	private void checkIfSolved() {
+		for(int i = 0; i < sizeX; i++) {
+			for(int j = 0; j < sizeY; j++) {
+				if(playGrid.getBox(i, j).getStatus() == BoxStatus.CORRECT) {
+					if(solution.getBox(i, j).getStatus() != BoxStatus.CORRECT) {
+						return;
+					}
+				} else if(solution.getBox(i, j).getStatus() == BoxStatus.CORRECT) {
+					return;
+				}
+			}
+		}
+		CommonVars.setGameStatus(GameStatus.SUCCEEDED);
+	}
+
 	private void incrementCurrPos() {
 		if(currPos.x + squareWidth >= bound2.x) {
 			currPos.x = bound1.x;
@@ -253,5 +302,9 @@ public class GameGrid extends View {
 			}
 		}
 		clueLenVert = maxVertLen;
+	}
+
+	public void setTiedCounter(MistakeCounter tiedCounter) {
+		this.tiedCounter = tiedCounter;
 	}
 }

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         Background background = new Background();
         mainActivityLayout = new RelativeLayout(this);
 
-	    CommonVars.makeTimer(background, mainActivityLayout);
+	    CommonVars.makeBackgroundTimer(background, mainActivityLayout);
 
         mainActivityLayout.setBackgroundColor(Color.WHITE);
 
@@ -123,20 +123,20 @@ public class MainActivity extends AppCompatActivity {
 	    setContentView(mainActivityLayout);
 
 
-	    CommonVars.getTimer().start();
+	    CommonVars.getBackgroundBackgroundTimer().start();
     }
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		CommonVars.getTimer().pause();
+		CommonVars.getBackgroundBackgroundTimer().pause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		CommonVars.getTimer().start();
-		CommonVars.getTimer().setLayout(mainActivityLayout);
+		CommonVars.getBackgroundBackgroundTimer().start();
+		CommonVars.getBackgroundBackgroundTimer().setLayout(mainActivityLayout);
 	}
 
 	@Override

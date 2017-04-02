@@ -9,4 +9,8 @@
     <string name="sizePickerTitle">Puzzle Size</string>
     <string name="backButtonText">Back</string>
     <string name="playButtonText">Play</string>
+    <string name="pauseButtonText">Pause</string>
+    <string name="pausedText">PAUSED</string>
+    <string name="resumeButtonText">Resume</string>
+    <string name="modePencil">Pencil</string>
 </resources>
