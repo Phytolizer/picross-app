@@ -131,4 +131,14 @@ public class CommonVars {
 	public static ControlMode getControlMode() {
 		return controlMode;
 	}
+
+	public static void setupNewGame() {
+		resetGameTimer();
+		setGameStatus(GameStatus.IN_PROGRESS);
+		resetMistakes();
+		if(controlMode == ControlMode.MARK) {
+			toggleControlMode();
+		}
+	}
+
 }

@@ -13,4 +13,7 @@
     <string name="pausedText">PAUSED</string>
     <string name="resumeButtonText">Resume</string>
     <string name="modePencil">Pencil</string>
+    <string name="failedText">You Lose :(</string>
+    <string name="retryButtonText">Try Again</string>
+    <string name="succeededText">You Win!</string>
 </resources>

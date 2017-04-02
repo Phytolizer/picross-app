@@ -14,8 +14,8 @@ import android.widget.TextView;
 public class SizePicker extends AppCompatActivity {
 
 	private TextView xText, yText;
-	private Button incrementX, incrementY;
-	private Button decrementX, decrementY;
+	private MyButton incrementX, incrementY;
+	private MyButton decrementX, decrementY;
 	private RelativeLayout.LayoutParams xTextDetails, yTextDetails;
 	private int xTextWidth, yTextWidth;
 	private int buttonHeight, buttonWidth;
@@ -105,11 +105,10 @@ public class SizePicker extends AppCompatActivity {
 			RelativeLayout.LayoutParams decYDetails = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
 			decYDetails.setMargins(toDp(250) - 2 * buttonWidth, toDp(200) - 2 * buttonHeight, 0, 0);
 
-			incrementX = new Button(this);
+			incrementX = new MyButton(this);
 			incrementX.setBackgroundColor(Color.WHITE);
 			incrementX.setId(1);
 			incrementX.setText("▲");
-			incrementX.setTextSize(toDp(10));
 			incrementX.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -122,11 +121,10 @@ public class SizePicker extends AppCompatActivity {
 			xTextDetails.addRule(RelativeLayout.CENTER_VERTICAL, incrementX.getId());
 			decXDetails.addRule(RelativeLayout.BELOW, incrementX.getId());
 
-			incrementY = new Button(this);
+			incrementY = new MyButton(this);
 			incrementY.setBackgroundColor(Color.WHITE);
 			incrementY.setId(2);
 			incrementY.setText("▲");
-			incrementY.setTextSize(toDp(10));
 			incrementY.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -160,12 +158,10 @@ public class SizePicker extends AppCompatActivity {
 			yTextDetails.setMargins(((buttonWidth - xTextWidth) / 2) + 500 - 2 * buttonWidth + ((buttonWidth - yTextWidth) / 2), 0, 0, 0);
 			innerLayout.addView(yText, yTextDetails);
 
-			decrementX = new Button(this);
+			decrementX = new MyButton(this);
 			decrementX.setId(5);
 			decrementX.setBackgroundColor(Color.WHITE);
 			decrementX.setText("▼");
-			decrementX.setTextSize(toDp(10));
-			decrementX.setTextColor(Color.BLACK);
 			decrementX.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -176,11 +172,10 @@ public class SizePicker extends AppCompatActivity {
 			innerLayout.addView(decrementX, decXDetails);
 			decYDetails.addRule(RelativeLayout.RIGHT_OF, decrementX.getId());
 
-			decrementY = new Button(this);
+			decrementY = new MyButton(this);
 			decrementY.setId(6);
 			decrementY.setBackgroundColor(Color.WHITE);
 			decrementY.setText("▼");
-			decrementY.setTextSize(toDp(10));
 			decrementY.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -195,23 +190,16 @@ public class SizePicker extends AppCompatActivity {
 		}
 		//endregion
 
-		Button startButton = new Button(this);
+		MyButton startButton = new MyButton(this);
 		startButton.setId(4);
 		startButton.setBackgroundColor(Color.GREEN);
-		startButton.setText(R.string.playButtonText);
-		startButton.setTextSize(toDp(10));
-		startButton.setTextColor(Color.BLACK);
+		startButton.setText("Play");
 		startButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CommonVars.setSizeX(Integer.parseInt((String) xText.getText()));
 				CommonVars.setSizeY(Integer.parseInt((String) yText.getText()));
-				CommonVars.resetGameTimer();
-				CommonVars.setGameStatus(GameStatus.IN_PROGRESS);
-				CommonVars.resetMistakes();
-				if(CommonVars.getControlMode() == ControlMode.MARK) {
-					CommonVars.toggleControlMode();
-				}
+				CommonVars.setupNewGame();
 				startActivity(new Intent(SizePicker.this, GameActivity.class));
 			}
 		});

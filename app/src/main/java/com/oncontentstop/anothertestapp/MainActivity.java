@@ -2,6 +2,7 @@ package com.oncontentstop.anothertestapp;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -44,19 +45,19 @@ public class MainActivity extends AppCompatActivity {
 	    titleDetails.setMargins(0, 0, 0, 30);
 
         RelativeLayout.LayoutParams startGameDetails = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
+                400,
+                70
         );
         startGameDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 	    startGameDetails.setMargins(0, 0, 0, 25);
 
-	    RelativeLayout.LayoutParams dummy1Details = new RelativeLayout.LayoutParams(
-			    RelativeLayout.LayoutParams.WRAP_CONTENT,
-			    RelativeLayout.LayoutParams.WRAP_CONTENT
+	    RelativeLayout.LayoutParams leaderboardDetails = new RelativeLayout.LayoutParams(
+			    400,
+			    70
 	    );
-	    dummy1Details.addRule(RelativeLayout.CENTER_HORIZONTAL);
-	    dummy1Details.addRule(RelativeLayout.CENTER_VERTICAL);
-	    dummy1Details.setMargins(0, 0, 0, 25);
+	    leaderboardDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
+	    leaderboardDetails.addRule(RelativeLayout.CENTER_VERTICAL);
+	    leaderboardDetails.setMargins(0, 0, 0, 25);
 
 	    RelativeLayout.LayoutParams dummy2Details = new RelativeLayout.LayoutParams(
 			    RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -70,38 +71,37 @@ public class MainActivity extends AppCompatActivity {
 	    picrossTitle.setTextSize(50);
 	    picrossTitle.setTextColor(Color.BLACK);
 
-        final Button bStartGame = new Button(this);
+        final MyButton bStartGame = new MyButton(this);
 	    bStartGame.setId(2);
 	    bStartGame.setBackgroundColor(Color.GREEN);
-	    bStartGame.setText(R.string.startButtonText);
-	    bStartGame.setTextSize(20);
-	    bStartGame.setWidth(400);
+	    bStartGame.setText("Start Game");
 	    bStartGame.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 //			    Log.i(TAG, "User clicked " + R.string.startButtonText);
 			    //say 'you did it!'
 			    startActivity(new Intent(MainActivity.this, SizePicker.class));
-
 		    }
 	    });
 	    titleDetails.addRule(RelativeLayout.ABOVE, bStartGame.getId());
 
-	    Button bDummy1 = new Button(this);
-	    bDummy1.setId(3);
-	    bDummy1.setBackgroundColor(Color.YELLOW);
-	    bDummy1.setText(R.string.button2Text);
-	    bDummy1.setTextSize(20);
-	    bDummy1.setWidth(400);
-	    bDummy1.setOnClickListener(new View.OnClickListener() {
+	    MyButton bLeaderboard = new MyButton(this);
+	    bLeaderboard.setId(3);
+	    bLeaderboard.setBackgroundColor(Color.YELLOW);
+	    bLeaderboard.setText("Leaderboard");
+	    bLeaderboard.setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
 //			    Log.i(TAG, "User clicked " + R.string.button2Text);
 			    //do something
+			    String url = "https://www.westonreed.com/picross";
+			    Intent i = new Intent(Intent.ACTION_VIEW);
+			    i.setData(Uri.parse(url));
+			    startActivity(i);
 		    }
 	    });
-	    startGameDetails.addRule(RelativeLayout.ABOVE, bDummy1.getId());
-	    dummy2Details.addRule(RelativeLayout.BELOW, bDummy1.getId());
+	    startGameDetails.addRule(RelativeLayout.ABOVE, bLeaderboard.getId());
+	    dummy2Details.addRule(RelativeLayout.BELOW, bLeaderboard.getId());
 
 	    Button bDummy2 = new Button(this);
 	    bDummy2.setId(4);
@@ -115,10 +115,11 @@ public class MainActivity extends AppCompatActivity {
 			    //do something else
 		    }
 	    });
+		bDummy2.setVisibility(View.INVISIBLE);
 
 	    mainActivityLayout.addView(picrossTitle, titleDetails);
 	    mainActivityLayout.addView(bStartGame, startGameDetails);
-	    mainActivityLayout.addView(bDummy1, dummy1Details);
+	    mainActivityLayout.addView(bLeaderboard, leaderboardDetails);
 	    mainActivityLayout.addView(bDummy2, dummy2Details);
 	    setContentView(mainActivityLayout);
 

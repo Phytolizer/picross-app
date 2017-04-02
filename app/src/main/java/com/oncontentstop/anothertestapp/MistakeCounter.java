@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.View;
 
 /**
@@ -14,6 +15,7 @@ public class MistakeCounter extends View {
 	private final int PAD = 4;
 	private Paint borderPaint, fadedXPaint, boldXPaint;
 	private float width, height;
+	private final Rect textBounds = new Rect();
 	public MistakeCounter(Context context) {
 		super(context);
 		init();
@@ -39,17 +41,19 @@ public class MistakeCounter extends View {
 		float totalWidthFilledByX = CommonVars.getMaxMistakes() * fadedXPaint.measureText("X");
 		float xWidth = fadedXPaint.measureText("X");
 		float emptySpace = width - totalWidthFilledByX;
+		if(emptySpace < 0)
+			return;
 		float spacePerX = emptySpace / (CommonVars.getMaxMistakes() + 1);//includes start and end spaces
 		for(int currX = 0; currX < CommonVars.getMaxMistakes(); currX++) {
-			float xPos = spacePerX + currX * spacePerX + currX * xWidth;
-			float yPos = height - PAD;
+			float xPos = spacePerX + currX * spacePerX + currX * xWidth + xWidth / 2;
+			float yPos = height / 2;
 			Paint p;
 			if(currX < CommonVars.getNumMistakes()) {
 				p = boldXPaint;
 			} else {
 				p = fadedXPaint;
 			}
-			canvas.drawText("X", xPos, yPos, p);
+			drawTextCentered(canvas, p, "X", xPos, yPos);
 		}
 	}
 	@Override
@@ -62,5 +66,10 @@ public class MistakeCounter extends View {
 
 	private float getTextSize() {
 		return height - 2 * PAD;
+	}
+
+	public void drawTextCentered(Canvas canvas, Paint paint, String text, float cx, float cy){
+		paint.getTextBounds(text, 0, text.length(), textBounds);
+		canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(), paint);
 	}
 }
