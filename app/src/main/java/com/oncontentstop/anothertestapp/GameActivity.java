@@ -63,8 +63,8 @@ public class GameActivity extends AppCompatActivity {
 		timerDetails.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
 		RelativeLayout.LayoutParams modeButtonDetails = new RelativeLayout.LayoutParams(
-				toDp(75),
-				toDp(60)
+				toDp(150),
+				toDp(100)
 		);
 		modeButtonDetails.setMargins(toDp(5), 0, 0, toDp(5));
 		modeButtonDetails.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -298,6 +298,7 @@ public class GameActivity extends AppCompatActivity {
 					failLayout.setVisibility(View.INVISIBLE);
 					pauseLayout.setVisibility(View.INVISIBLE);
 					coverLayout.setVisibility(View.VISIBLE);
+					//submit score here
 					break;
 				case IN_PROGRESS:
 					if(!CommonVars.isPaused())

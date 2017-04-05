@@ -45,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
 	    titleDetails.setMargins(0, 0, 0, 30);
 
         RelativeLayout.LayoutParams startGameDetails = new RelativeLayout.LayoutParams(
-                400,
-                70
+                600,
+                200
         );
         startGameDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 	    startGameDetails.setMargins(0, 0, 0, 25);
 
 	    RelativeLayout.LayoutParams leaderboardDetails = new RelativeLayout.LayoutParams(
-			    400,
-			    70
+			    600,
+			    200
 	    );
 	    leaderboardDetails.addRule(RelativeLayout.CENTER_HORIZONTAL);
 	    leaderboardDetails.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
